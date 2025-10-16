@@ -1,0 +1,50 @@
+package br.com.springboot.dao;
+
+import java.util.List;
+
+import org.springframework.stereotype.Repository;
+
+import br.com.springboot.model.Cliente;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
+import jakarta.transaction.Transactional;
+
+@Repository
+public class ClienteDAO implements CRUD<Cliente, Long>{
+	
+	@PersistenceContext
+	private EntityManager entityManager;
+	@Transactional
+
+	@Override
+	public Cliente pesquisaPeloId(Long id) {
+		return entityManager.find(Cliente.class, id);
+	}
+	@Transactional
+
+	@Override
+	public List<Cliente> lista() {
+		Query query = entityManager.createQuery("Select c from Cliente c");
+		return (List<Cliente>) query.getResultList();
+	}
+	@Transactional
+
+	@Override
+	public void insere(Cliente cliente) {
+		entityManager.persist(cliente);
+		
+	}
+	@Transactional
+
+	@Override
+	public void atualiza(Cliente cliente) {
+		entityManager.merge(cliente);
+		
+	}
+	@Transactional
+	@Override
+	public void remove(Cliente cliente) {
+		entityManager.remove(cliente);	
+	}
+}

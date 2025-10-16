@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Sistema de Estoque</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <h1>Clientes</h1>
+        <hr>
+        <div>
+            <a class="btn btn-primary" th:href="@{/clientes/novo}">Novo</a>
+        </div>
+			<div th:if="${feedback != null and !#strings.isEmpty(feedback)}" 
+     class="alert alert-success alert-dismissible fade show" role="alert">
+    
+    <span th:text="${feedback}">Mensagem padrão.</span> 
+    
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <td><b>NOME</b></td>
+                    <td><b>DATA NASCIMENTO</b></td>
+                    <td><b>CPF</b></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="cliente : ${clientes}">
+                    <td th:text="${cliente.nome}"></td>
+                    <td th:text="${cliente.dataDeNascimento}"></td>
+                    <td th:text="${cliente.cpf}"></td>
+                    <td>
+                        <a class="btn btn-secondary" th:href="@{/clientes/edita/{id}(id=${cliente.id})}">Editar</a>
+                    </td>
+                    <td>
+                        <a class="btn btn-secondary"  th:if="${cliente.ativo == false}" 
+                           th:href="@{/clientes/ativa/{id}(id=${cliente.id})}">Ativar</a>
+                        <a class="btn btn-secondary" th:unless="${cliente.ativo == false}" 
+                           th:href="@{/clientes/inativa/{id}(id=${cliente.id})}">Inativar</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    
+</body>
+</html>
