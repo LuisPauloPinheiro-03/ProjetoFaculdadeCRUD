@@ -1,4 +1,4 @@
-package br.com.springboot.controller;
+ package br.com.springboot.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

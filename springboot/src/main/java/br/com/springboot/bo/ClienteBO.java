@@ -23,13 +23,11 @@ public class ClienteBO implements CRUD<Cliente, Long> {
             cliente.setCpf(cpfLimpo);
         }
         
-        // Limpa o Celular: remove parênteses, espaços e hifens
         if (cliente.getCelular() != null) {
             String celularLimpo = cliente.getCelular().replaceAll("[^0-9]", "");
             cliente.setCelular(celularLimpo);
         }
         
-        // Limpa o Telefone: remove parênteses, espaços e hifens
         if (cliente.getTelefone() != null) {
             String telefoneLimpo = cliente.getTelefone().replaceAll("[^0-9]", "");
             cliente.setTelefone(telefoneLimpo);
