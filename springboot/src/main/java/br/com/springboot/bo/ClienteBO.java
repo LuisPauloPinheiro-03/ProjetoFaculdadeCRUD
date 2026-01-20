@@ -47,7 +47,7 @@ public class ClienteBO implements CRUD<Cliente, Long> {
     }
 
     @Override
-    @Transactional // A transação é importante para o commit
+    @Transactional 
     public void insere(Cliente cliente) {
         // CHAMA A LIMPEZA ANTES DE PERSISTIR
         limparDadosDoCliente(cliente); 
@@ -55,7 +55,7 @@ public class ClienteBO implements CRUD<Cliente, Long> {
     }
 
     @Override
-    @Transactional // A transação é importante para o commit
+    @Transactional 
     public void atualiza(Cliente cliente) {
         // CHAMA A LIMPEZA ANTES DE PERSISTIR
         limparDadosDoCliente(cliente); 

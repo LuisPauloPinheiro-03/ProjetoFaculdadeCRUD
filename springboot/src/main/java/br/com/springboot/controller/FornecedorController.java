@@ -1,4 +1,4 @@
- package br.com.springboot.controller;
+package br.com.springboot.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,59 +15,76 @@ import br.com.springboot.bo.FornecedorBO;
 import br.com.springboot.model.Fornecedor;
 import jakarta.validation.Valid;
 
-@Controller 
+@Controller
 @RequestMapping("/fornecedores")
 public class FornecedorController {
 
-	@Autowired
-	private FornecedorBO bo;
-	
-	@RequestMapping(value = "/novo", method = RequestMethod.GET)
-	public ModelAndView novo(ModelMap model) {
-		model.addAttribute("fornecedor", new Fornecedor());
-		return new ModelAndView("/fornecedor/formulario", model);
-	}
-	
-	@RequestMapping(value = "", method = RequestMethod.POST)
-	public String salva (@Valid @ModelAttribute Fornecedor fornecedor, BindingResult result, RedirectAttributes attr) {
-		if (result.hasErrors())
-			return "fornecedor/formulario";
-		if (fornecedor.getId() == null) {
-			bo.insere(fornecedor);
-			attr.addFlashAttribute("feedback", "Fornecedor cadastrado com sucesso");
-		}
-		else {
-			bo.atualiza(fornecedor);
-			attr.addFlashAttribute("feedback", "Fornecedor foi atualizado com sucesso");
+    @Autowired
+    private FornecedorBO fornecedorBO;
 
-		}
-		return "redirect:/fornecedores";
-	}
-	
-	@RequestMapping(value = "", method = RequestMethod.GET)
-	public ModelAndView lista(ModelMap model) {
-		model.addAttribute("fornecedores", bo.lista());
-		return new ModelAndView("/fornecedor/lista", model);
-	}
-	
-	@RequestMapping(value = "/edita/{id}", method = RequestMethod.GET)
-	public ModelAndView edita(@PathVariable("id") Long id, ModelMap model) {
-		model.addAttribute("fornecedor", bo.pesquisaPeloId(id));
-		return new ModelAndView("/fornecedor/formulario", model);
-	}
-	
-	@RequestMapping(value = "/inativa/{id}", method = RequestMethod.GET)
-	public String inativa(@PathVariable("id") Long id) {
-		Fornecedor fornecedor = bo.pesquisaPeloId(id);
-		bo.inativa(fornecedor);
-		return "redirect:/fornecedores";
-	}
-	
-	@RequestMapping(value = "/ativa/{id}", method = RequestMethod.GET)
-	public String ativa(@PathVariable("id") Long id) {
-		Fornecedor fornecedor = bo.pesquisaPeloId(id);
-		bo.ativa(fornecedor);
-		return "redirect:/fornecedores";
-	}
-	
+    @RequestMapping(value = "/novo", method = RequestMethod.GET)
+    public ModelAndView novo(ModelMap model) {
+        model.addAttribute("fornecedor", new Fornecedor());
+        return new ModelAndView("/fornecedor/formulario", model);
+    }
+
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public String salva(@Valid @ModelAttribute Fornecedor fornecedor,
+                        BindingResult result,
+                        RedirectAttributes attr) {
+        
+        if (result.hasErrors()) {
+            return "fornecedor/formulario";
+        }
+
+        if (fornecedor.getId() == null) {
+            fornecedorBO.insere(fornecedor);
+            attr.addFlashAttribute("feedback", "O fornecedor foi cadastrado com sucesso");
+        } else {
+            fornecedorBO.atualiza(fornecedor);
+            attr.addFlashAttribute("feedback", "O fornecedor foi atualizado com sucesso");
+        }
+        
+        return "redirect:/fornecedores";
+    }
+
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public ModelAndView lista(ModelMap model) {
+        model.addAttribute("fornecedores", fornecedorBO.lista());
+        return new ModelAndView("/fornecedor/lista", model);
+    }
+
+    @RequestMapping(value = "/edita/{id}", method = RequestMethod.GET)
+    public ModelAndView edita(@PathVariable("id") Long id, ModelMap model) {
+        try {
+            model.addAttribute("fornecedor", fornecedorBO.pesquisaPeloId(id));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ModelAndView("/fornecedor/formulario", model);
+    }
+
+    @RequestMapping(value = "/inativa/{id}", method = RequestMethod.GET)
+    public String inativa(@PathVariable("id") Long id, RedirectAttributes attr) {
+        try {
+            Fornecedor fornecedor = fornecedorBO.pesquisaPeloId(id);
+            fornecedorBO.inativa(fornecedor);
+            attr.addFlashAttribute("feedback", "O fornecedor foi inativado com sucesso");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "redirect:/fornecedores";
+    }
+
+    @RequestMapping(value = "/ativa/{id}", method = RequestMethod.GET)
+    public String ativa(@PathVariable("id") Long id, RedirectAttributes attr) {
+        try {
+            Fornecedor fornecedor = fornecedorBO.pesquisaPeloId(id);
+            fornecedorBO.ativa(fornecedor);
+            attr.addFlashAttribute("feedback", "O fornecedor foi ativado com sucesso");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "redirect:/fornecedores";
+    }
 }

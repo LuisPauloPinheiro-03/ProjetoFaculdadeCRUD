@@ -15,6 +15,7 @@ public class FornecedorBO implements CRUD<Fornecedor, Long> {
 	@Autowired
 	private FornecedorDAO dao;
 	
+
 	@Override
 	public Fornecedor pesquisaPeloId(Long id) {
 		return dao.pesquisaPeloId(id);
@@ -25,15 +26,30 @@ public class FornecedorBO implements CRUD<Fornecedor, Long> {
 		return dao.lista();
 	}
 
-    @Override
-    public void insere(Fornecedor fornecedor) {
-        dao.insere(fornecedor);
-    }
+	@Override
+	public void insere(Fornecedor fornecedor) {
 
-    @Override
-    public void atualiza(Fornecedor fornecedor) {
-        dao.atualiza(fornecedor);
-    }
+	    if (fornecedor.getCelular() != null) {
+	        fornecedor.setCelular(
+	            fornecedor.getCelular().replaceAll("\\D", "")
+	        );
+	    }
+
+	    if (fornecedor.getTelefone() != null) {
+	        fornecedor.setTelefone(
+	            fornecedor.getTelefone().replaceAll("\\D", "")
+	        );
+	    }
+
+	    dao.insere(fornecedor);
+	}
+
+
+
+	    @Override
+	    public void atualiza(Fornecedor fornecedor) {
+	            dao.atualiza(fornecedor);
+	    }
 
     @Override
     public void remove(Fornecedor fornecedor) {
@@ -50,7 +66,6 @@ public class FornecedorBO implements CRUD<Fornecedor, Long> {
     	dao.atualiza(fornecedor);
     
     }
-		
-	}
-
-
+    
+    
+}

@@ -45,9 +45,9 @@
                     </td>
                     <td>
                         <a class="btn btn-secondary"  th:if="${fornecedor.ativo == false}" 
-                           th:href="@{/clientes/ativa/{id}(id=${cliente.id})}">Ativar</a>
-                        <a class="btn btn-secondary" th:unless="${cliente.ativo == false}" 
-                           th:href="@{/clientes/inativa/{id}(id=${cliente.id})}">Inativar</a>
+                           th:href="@{/fornecedores/ativa/{id}(id=${fornecedor.id})}">Ativar</a>
+                        <a class="btn btn-secondary" th:unless="${fornecedor.ativo == false}" 
+                           th:href="@{/fornecedores/inativa/{id}(id=${fornecedor.id})}">Inativar</a>
                     </td>
                 </tr>
             </tbody>
